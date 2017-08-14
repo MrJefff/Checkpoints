@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Oxide.Plugins
 {
-    [Info("Checkpoints", "Ryan", "1.0.0")]
+    [Info("Checkpoints", "Ryan", "1.0.1")]
     class Checkpoints : RustPlugin
     {
         private string Lang(string key, string id = null, params object[] args) => string.Format(lang.GetMessage(key, this, id), args);
@@ -150,10 +150,10 @@ namespace Oxide.Plugins
             }
         }
 
-        void OnEntityKill(BaseNetworkable networkable)
+        private void OnEntityKill(BaseNetworkable networkable)
         {
             var bag = networkable as SleepingBag;
-            if (bag != null && Data.Exists(bag.OwnerID))
+            if (bag != null && Data.Exists(bag.OwnerID) && sData.Players[bag.OwnerID].ID == bag.net.ID)
             {
                 Data.Remove(bag.OwnerID);
                 var player = BasePlayer.FindByID(bag.OwnerID);
